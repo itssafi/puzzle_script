@@ -27,37 +27,53 @@ class RestaurantPuzzle(object):
                     restaurant_details[restaurant_id].append(cost_and_item)
 
         flag = 0
-        #print restaurant_details
+        print restaurant_details
+        print '\n'
         rest_no = 0
         total_cost = 0
         cost_list = []
         id_and_cost = {}
-        for key in sorted(restaurant_details):
-            #print key
-            items_list = []
-            cost_list = []
-            #print key,
-            for search_item in restaurant_details[key]:
-                #print search_item,
-                items_list.extend(search_item.values()[0])
-                #cost_list.extend(search_item.keys())
-                #print cost_list
-                if set(items_list).issuperset(kwargs['item_list']):
-                    flag = 1
-                    rest_no = rest_no + 1
-                    #total_cost = sum(cost_list)
-                    #cost_list.append(sum(cost_list))
+        no_of_item = len(kwargs['item_list'])
+        for key in restaurant_details:
+            if no_of_item > len(restaurant_details[key]):
+                continue
+            if no_of_item == len(restaurant_details[key]):
+                items_list = []
+                cost_list = []
+                for search_item in restaurant_details[key]:
+                    #print search_item,
+                    items_list.extend(search_item.values()[0])
                     cost_list.extend(search_item.keys())
-                    id_and_cost.update({key : cost_list})
-                    #print id_and_cost
-            #print '\n'
+                print cost_list, items_list
+                #print kwargs['item_list']
+                if sorted(items_list) == sorted(kwargs['item_list']):
+                    id_and_cost[key] = sum(cost_list)
+                    rest_no += 1
+                    flag = 1
+                    print key, sum(cost_list)
+
+            # #print key
+            # cost_list = []
+            # #print key,
+            # for search_item in restaurant_details[key]:
+            #     #print search_item,
+            #     items_list.extend(search_item.values()[0])
+            #     print items_list
+            #     #cost_list.extend(search_item.keys())
+            #     #print cost_list
+            #     if set(items_list).issuperset(kwargs['item_list']):
+            #         flag = 1
+            #         rest_no = rest_no + 1
+            #         #total_cost = sum(cost_list)
+            #         #cost_list.append(sum(cost_list))
+            #         cost_list.extend(search_item.keys())
+            #         id_and_cost.update({key : cost_list})
+            #         print cost_list
+            # #print '\n'
 
         if rest_no > 1:
-            #print cost_list
-            total_cost = min(cost_list)
-            print id_and_cost
+            print min(id_and_cost.values())
         elif rest_no == 1:
-            #print cost_list
             print id_and_cost
         if flag == 0:
             print 'Nil'
