@@ -30,32 +30,35 @@ class RestaurantPuzzle(object):
         #print restaurant_details
         rest_no = 0
         total_cost = 0
-        id_and_cost = []
         cost_list = []
+        id_and_cost = {}
         for key in sorted(restaurant_details):
             #print key
             items_list = []
-            print key,
+            cost_list = []
+            #print key,
             for search_item in restaurant_details[key]:
-                print search_item,
+                #print search_item,
                 items_list.extend(search_item.values()[0])
-                cost_list.extend(search_item.keys())
+                #cost_list.extend(search_item.keys())
+                #print cost_list
+                if set(items_list).issuperset(kwargs['item_list']):
+                    flag = 1
+                    rest_no = rest_no + 1
+                    #total_cost = sum(cost_list)
+                    #cost_list.append(sum(cost_list))
+                    cost_list.extend(search_item.keys())
+                    id_and_cost.update({key : cost_list})
+                    #print id_and_cost
+            #print '\n'
 
-            if set(items_list).issuperset(kwargs['item_list']):
-                flag = 1
-                rest_no = rest_no + 1
-                total_cost = sum(cost_list)
-            print '\n'
-
-        print rest_no
         if rest_no > 1:
-            print cost_list
+            #print cost_list
             total_cost = min(cost_list)
-            print key, total_cost
-        else:
-            print cost_list
-            total_cost = sum(cost_list)
-            print key, total_cost
+            print id_and_cost
+        elif rest_no == 1:
+            #print cost_list
+            print id_and_cost
         if flag == 0:
             print 'Nil'
 
