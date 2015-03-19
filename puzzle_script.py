@@ -9,44 +9,44 @@ class RestaurantPuzzle(object):
         """
         Reading csv file reacord and put into a dictionary
         """
-        restaurant_details = {}
+        self.restaurant_details = {}
         csv_file = kwargs['csv_file']
         with open(csv_file) as file_obj:
             for line in file_obj:
                 line = line.rstrip()
                 list_items = line.split(', ')
                 restaurant_id = list_items.pop(0)
-                cost = list_items.pop(0)
+                if list_items:
+                    cost = list_items.pop(0)
                 dinner_items = list(list_items)
                 cost_and_item = {float(cost) : dinner_items}
-                if restaurant_id not in restaurant_details.keys():
-                    restaurant_details[restaurant_id] = [cost_and_item]
+                if restaurant_id not in self.restaurant_details.keys():
+                    self.restaurant_details[restaurant_id] = [cost_and_item]
                 else:
-                    restaurant_details[restaurant_id].append(cost_and_item)
+                    self.restaurant_details[restaurant_id].append(cost_and_item)
 
-        return restaurant_details
+        return self.restaurant_details
 
     def get_restaurant_id_and_min_cost(self, kwargs):
         """
         It will return restaurant id and minimum cost of dinner
         """
-        flag = 0
-        rest_no = 0
-        cost_list = []
-        id_and_cost = {}
-        no_of_item = len(kwargs['item_list'])
+        self.flag = 0
+        self.rest_no = 0
+        self.cost_list = []
+        self.id_and_cost = {}
+        self.no_of_item = len(kwargs['item_list'])
 
-        restaurant_details = self.read_csv_file(kwargs)
-
-        # Checking search item/items passed or not
-        if no_of_item < 1:
+        if self.no_of_item < 1:
             print 'Please pass search item...!'
             return
 
-        for key in restaurant_details:
+        self.restaurant_details = self.read_csv_file(kwargs)
+
+        for key in self.restaurant_details:
             items_list = []
             cost_list = []
-            for search_item in restaurant_details[key]:
+            for search_item in self.restaurant_details[key]:
                 temp_list = []
                 cost = 0
                 for cost, item in search_item.iteritems():
@@ -55,23 +55,23 @@ class RestaurantPuzzle(object):
 
                     # Checking for single item for single cost
                     if kwargs['item_list'] == item:
-                        id_and_cost[key] = cost
-                        rest_no += 1
-                        flag = 1
+                        self.id_and_cost[key] = cost
+                        self.rest_no += 1
+                        self.flag = 1
                         continue
 
                     # Checking for items for single cost present in each restaurant  
                     elif sorted(kwargs['item_list']) == sorted(item):
-                        id_and_cost[key] = cost
-                        rest_no += 1
-                        flag = 1
+                        self.id_and_cost[key] = cost
+                        self.rest_no += 1
+                        self.flag = 1
                         continue
 
                 # Checking for multiple items in each restaurant
                 if set(temp_list).issuperset(kwargs['item_list']):
-                    id_and_cost[key] = cost
-                    rest_no += 1
-                    flag = 1
+                    self.id_and_cost[key] = cost
+                    self.rest_no += 1
+                    self.flag = 1
                     continue
 
                 # Checking for all items in each restaurant
@@ -79,21 +79,21 @@ class RestaurantPuzzle(object):
                     items_list.extend(search_item.values()[0])
                     cost_list.extend(search_item.keys())
             if set(items_list).issuperset(kwargs['item_list']):
-                id_and_cost[key] = sum(cost_list)
-                rest_no += 1
-                flag = 1
+                self.id_and_cost[key] = sum(cost_list)
+                self.rest_no += 1
+                self.flag = 1
 
         # Checking if more than one restaurant found for search item/items
-        if rest_no > 1:
-            restaurant_id =  min(id_and_cost, key=id_and_cost.get)
-            print restaurant_id, min(id_and_cost.values())
+        if self.rest_no > 1:
+            restaurant_id =  min(self.id_and_cost, key=self.id_and_cost.get)
+            print restaurant_id, min(self.id_and_cost.values())
 
         # Checking for one restaurant found for search item/items
-        elif rest_no == 1:
-            print id_and_cost.keys()[0], id_and_cost.values()[0]
+        elif self.rest_no == 1:
+            print self.id_and_cost.keys()[0], self.id_and_cost.values()[0]
 
         # Checking if search item/items not found 
-        if flag == 0:
+        if self.flag == 0:
             print 'Nil'
 
 
