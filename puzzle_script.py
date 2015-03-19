@@ -36,10 +36,12 @@ class RestaurantPuzzle(object):
         id_and_cost = {}
         no_of_item = len(kwargs['item_list'])
 
+        restaurant_details = self.read_csv_file(kwargs)
+
+        # Checking search item/items passed or not
         if no_of_item < 1:
             print 'Please pass search item...!'
             return
-        restaurant_details = self.read_csv_file(kwargs)
 
         for key in restaurant_details:
             items_list = []
