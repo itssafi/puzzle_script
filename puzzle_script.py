@@ -58,21 +58,21 @@ class RestaurantPuzzle(object):
                         flag = 1
                         continue
 
-                    # Checking for items for single cost present in each restaurent  
+                    # Checking for items for single cost present in each restaurant  
                     elif sorted(kwargs['item_list']) == sorted(item):
                         id_and_cost[key] = cost
                         rest_no += 1
                         flag = 1
                         continue
 
-                # Checking for multiple items in each restaurent
+                # Checking for multiple items in each restaurant
                 if set(temp_list).issuperset(kwargs['item_list']):
                     id_and_cost[key] = cost
                     rest_no += 1
                     flag = 1
                     continue
 
-                # Checking for all items in each restaurent
+                # Checking for all items in each restaurant
                 if len(kwargs['item_list']) > 1:
                     items_list.extend(search_item.values()[0])
                     cost_list.extend(search_item.keys())
@@ -81,12 +81,12 @@ class RestaurantPuzzle(object):
                 rest_no += 1
                 flag = 1
 
-        # Checking if more than one restaurent found for search item/items
+        # Checking if more than one restaurant found for search item/items
         if rest_no > 1:
             restaurant_id =  min(id_and_cost, key=id_and_cost.get)
             print restaurant_id, min(id_and_cost.values())
 
-        # Checking for one restaurent found for search item/items
+        # Checking for one restaurant found for search item/items
         elif rest_no == 1:
             print id_and_cost.keys()[0], id_and_cost.values()[0]
 
