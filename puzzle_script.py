@@ -55,23 +55,17 @@ class RestaurantPuzzle(object):
 
                     # Checking for single item for single cost
                     if kwargs['item_list'] == item:
-                        self.id_and_cost[key] = cost
-                        self.rest_no += 1
-                        self.flag = 1
+                        self.set_values(key, cost)
                         continue
 
                     # Checking for items for single cost present in each restaurant  
                     elif sorted(kwargs['item_list']) == sorted(item):
-                        self.id_and_cost[key] = cost
-                        self.rest_no += 1
-                        self.flag = 1
+                        self.set_values(key, cost)
                         continue
 
                 # Checking for multiple items in each restaurant
                 if set(temp_list).issuperset(kwargs['item_list']):
-                    self.id_and_cost[key] = cost
-                    self.rest_no += 1
-                    self.flag = 1
+                    self.set_values(key, cost)
                     continue
 
                 # Checking for all items in each restaurant
@@ -79,9 +73,7 @@ class RestaurantPuzzle(object):
                     items_list.extend(search_item.values()[0])
                     cost_list.extend(search_item.keys())
             if set(items_list).issuperset(kwargs['item_list']):
-                self.id_and_cost[key] = sum(cost_list)
-                self.rest_no += 1
-                self.flag = 1
+                self.set_values(key, sum(cost_list))
 
         # Checking if more than one restaurant found for search item/items
         if self.rest_no > 1:
@@ -95,6 +87,11 @@ class RestaurantPuzzle(object):
         # Checking if search item/items not found 
         if self.flag == 0:
             print 'Nil'
+
+    def set_values(self, rest_id, cost):
+        self.id_and_cost[rest_id] = cost
+        self.rest_no += 1
+        self.flag = 1
 
 
 if __name__ == '__main__':
